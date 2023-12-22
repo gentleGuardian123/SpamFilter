@@ -183,51 +183,53 @@ def write_to_file(matrix,result,parameters,type,start_time):
     f.write("\n")
     f.close()
 
-global_start_time = time()
+if __name__ == '__main__':
 
-cvxopt.solvers.options['show_progress'] = False
+    global_start_time = time()
 
-df1 = pd.read_csv('wordslist.csv')
-df2 = pd.read_csv('frequency.csv',header=0)
+    cvxopt.solvers.options['show_progress'] = False
 
-input_output = df2.as_matrix(columns=None)
-X = input_output[:,:-1]
-Y = input_output[:,-1:]
+    df1 = pd.read_csv('wordslist.csv')
+    df2 = pd.read_csv('frequency.csv',header=0)
 
-total = X.shape[0]
-train = int(X.shape[0] * 70 / 100)
+    input_output = df2.as_matrix(columns=None)
+    X = input_output[:,:-1]
+    Y = input_output[:,-1:]
 
-X_train = X[:train,:]
-Y_train = Y[:train,:]
-X_test = X[train:,:]
-Y_test = Y[train:,:]
+    total = X.shape[0]
+    train = int(X.shape[0] * 70 / 100)
 
-f = open("results.txt","w+")
-f.close()
-k=0
+    X_train = X[:train,:]
+    Y_train = Y[:train,:]
+    X_test = X[train:,:]
+    Y_test = Y[train:,:]
 
-type = {}
-parameters = {}
+    f = open("results.txt","w+")
+    f.close()
+    k=0
 
-type['1'] = "polykernel"
-type['2'] = "linear"
+    type = {}
+    parameters = {}
 
-for i in range(2,4):
-    for j in range(0,10):
-        start_time = time()
-        parameters['dimension'] = i
-        parameters['offset'] = j
-        matrix , result = implementSVM(X_train,Y_train,X_test,Y_test,parameters,str(type['1']))
-        write_to_file(matrix,result,parameters,type,start_time)
-        k+=1
-        print("Done : " + str(k))
+    type['1'] = "polykernel"
+    type['2'] = "linear"
 
-start_time = time()
-matrix , result = implementSVM(X_train,Y_train,X_test,Y_test,parameters,str(type['2']))
-write_to_file(matrix,result,parameters,type,start_time)
-k+=1
-print("Done : " + str(k))
+    for i in range(2,4):
+        for j in range(0,10):
+            start_time = time()
+            parameters['dimension'] = i
+            parameters['offset'] = j
+            matrix , result = implementSVM(X_train,Y_train,X_test,Y_test,parameters,str(type['1']))
+            write_to_file(matrix,result,parameters,type,start_time)
+            k+=1
+            print("Done : " + str(k))
 
-f = open("results.txt","a")
-f.write("Time spent for entire code : " + str(round(time()-global_start_time,2)))
-f.close()
+    start_time = time()
+    matrix , result = implementSVM(X_train,Y_train,X_test,Y_test,parameters,str(type['2']))
+    write_to_file(matrix,result,parameters,type,start_time)
+    k+=1
+    print("Done : " + str(k))
+
+    f = open("results.txt","a")
+    f.write("Time spent for entire code : " + str(round(time()-global_start_time,2)))
+    f.close()
