@@ -16,7 +16,7 @@ lmtzr = WordNetLemmatizer()
 directory_in_str = "emails/"
 directory = os.fsencode(directory_in_str)
 
-f = open("Results/frequency.csv","w+")
+f = open("/content/drive/MyDrive/SpamFilter/Results/frequency.csv","w+")
 for i in words:
     f.write(str(i) + ',')
 f.write('output')
@@ -41,7 +41,7 @@ for file in os.listdir(directory):
             if(words[i]==word):
                 words_list_array[i] = words_list_array[i]+1
                 break
-    f = open("Results/frequency.csv","a")
+    f = open("/content/drive/MyDrive/SpamFilter/Results/frequency.csv","a")
     for i in range(words.size):
         f.write(str(int(words_list_array[i])) + ',')
     if(len(file_name)==68):

@@ -189,8 +189,8 @@ if __name__ == '__main__':
 
     cvxopt.solvers.options['show_progress'] = False
 
-    df1 = pd.read_csv('Results/wordslist.csv')
-    df2 = pd.read_csv('Results/frequency.csv',header=0)
+    df1 = pd.read_csv('/content/drive/MyDrive/SpamFilter/Results/wordslist.csv')
+    df2 = pd.read_csv('/content/drive/MyDrive/SpamFilter/Results/frequency.csv',header=0)
 
     # input_output = df2.as_matrix(columns=None)
     input_output = df2.values
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     X_test = X[train:,:]
     Y_test = Y[train:,:]
 
-    f = open("Results/results.txt","w+")
+    f = open("/content/drive/MyDrive/SpamFilter/Results/results.txt","w+")
     f.close()
     k=0
 
@@ -231,6 +231,6 @@ if __name__ == '__main__':
     k+=1
     print("Done : " + str(k))
 
-    f = open("Results/results.txt","a")
+    f = open("/content/drive/MyDrive/SpamFilter/Results/results.txt","a")
     f.write("Time spent for entire code : " + str(round(time()-global_start_time,2)))
     f.close()
