@@ -44,7 +44,7 @@ for file in os.listdir(directory):
 sorted_count = sorted(count.items(),key=operator.itemgetter(1),reverse=True)
 sorted_count = dict(sorted_count)
 
-f= open("wordslist.csv","w+")
+f= open("Results/wordslist.csv","w+")
 f.write('word,count')
 f.write('\n')
 for word , times in sorted_count.items():
