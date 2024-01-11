@@ -6,6 +6,7 @@ import operator
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from root_path import root_path
+from math import log
 
 def text_cleanup(text):
     text_without_punctuation = [c for c in text if c not in string.punctuation]
@@ -22,6 +23,8 @@ def generate_wordlist():
     directory = os.fsencode(root_path + "emails/")
     dc_dict = {}  # 统计词语出现的文档数
     tf_sum_dict = {}  # 统计词语的在各文档的tf总和
+    tot_file = len(os.listdir(directory))
+
     # for file in os.listdir(directory)[:100]:
     for file in os.listdir(directory):
         file = file.decode("utf-8")
@@ -29,7 +32,7 @@ def generate_wordlist():
         file_reading = open(file_name,"r",encoding='utf-8', errors='ignore')
         count = {}
         words = text_cleanup(file_reading.read())
-        word_len = float(len(words))
+        # word_len = len(words)
         for word in words:
             if (word.isdigit() == False and len(word) > 2):
                 word = lmtzr.lemmatize(word)
@@ -45,9 +48,9 @@ def generate_wordlist():
         # json.load(open("路径", 'r'))  通过load可以从文件种读取python对象，后续查询可直接根据字典中是否存在对应值查询
         for (key, value) in count.items():
             try:
-                tf_sum_dict[key] += float(value) / word_len
+                tf_sum_dict[key] += value # float(value) / word_len
             except:
-                tf_sum_dict[key] = float(value) / word_len
+                tf_sum_dict[key] = value # float(value) / word_len
         rd += 1
         if(rd % 100 == 0):
             print("Finished email file: " + str(rd))
@@ -55,13 +58,13 @@ def generate_wordlist():
     # 开始计算各词汇的tf-idf值，并构造字典
     tf_idf_dict = {}
     for (key, tf_value) in tf_sum_dict.items():
-        tf_idf_dict[key] = tf_value * (1 / float(dc_dict[key]))   # 也可以做log处理
+        tf_idf_dict[key] = tf_value * log(float(tot_file) / float(dc_dict[key]))   # 也可以做log处理
     # 排序挑选word_number数量的特征词
     sorted_count = sorted(tf_idf_dict.items(), key=operator.itemgetter(1), reverse=True)
     word_number = 900                               # 特征词的数量，可自行调整
     f = open(root_path + "wordlist.csv", "w+")
     # f = open(root_path + "test_wordlist.csv", "w+")
-    f.write('word,count')
+    f.write('word,tf-idf')
     f.write('\n')
     for (word, tf_idf_value) in sorted_count[:word_number]:
         f.write(str(word) + ',' + str(tf_idf_value))

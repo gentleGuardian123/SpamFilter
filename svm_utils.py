@@ -7,7 +7,7 @@ from svm_trainer import SVMTrainer
 from svm_kernel import Kernel
 from root_path import root_path
 
-def calculate(true_positive,false_positive,false_negative):
+def calculate(true_positive,false_positive,false_negative, true_negative):
     result = {}
     result['precision'] = true_positive / (true_positive + false_positive)
     result['recall'] = true_positive / (true_positive + false_negative)
@@ -34,6 +34,7 @@ def implement(X_train, Y_train, X_test, Y_test, params, type):
         predictor = trainer.train(X_train,Y_train)
     for i in range(X_test.shape[0]):
         ans = predictor.predict(X_test[i])
+        print(ans)
         if(ans==-1 and Y_test[i]==-1):
             spam_spam+=1
         elif(ans==1 and Y_test[i]==-1):
@@ -61,17 +62,18 @@ def write_to_file(matrix,result,parameters,type,start_time):
     f.write("\n")
     f.write("Recall : " + str(round(result['recall'],2)))
     f.write("\n")
-    f.write("Time spent for model : " + str(round(time()-start_time,2)))
+    f.write("Time spent for model : " + str(round(time.time()-start_time,2)))
     f.write("\n")
     f.write("\n")
     f.write("\n")
     f.close()
 
 def train_and_test():
-    global_start_time = time()
+    global_start_time = time.time()
     cvxopt.solvers.options['show_progress'] = False
 
-    df2 = pd.read_csv(root_path + "/frequency.csv", header=0)
+    # df2 = pd.read_csv(root_path + "frequency.csv", header=0)
+    df2 = pd.read_csv(root_path + "test_frequency.csv", header=0)
 
     input_output = df2.values
     X = input_output[:,:-1]
@@ -83,7 +85,8 @@ def train_and_test():
     X_test = X[train:,:]
     Y_test = Y[train:,:]
 
-    f = open(root_path + "results.txt","w+")
+    # f = open(root_path + "results.txt","w+")
+    f = open(root_path + "test_results.txt","w+")
     f.close()
     k = 0
     type = {}
@@ -96,7 +99,7 @@ def train_and_test():
             start_time = time.time()
             parameters['dimension'] = i
             parameters['offset'] = j
-            matrix , result = implement(X_train,Y_train,X_test,Y_test,parameters,str(type['1']))
+            matrix, result = implement(X_train,Y_train,X_test,Y_test,parameters,str(type['1']))
             write_to_file(matrix,result,parameters,type,start_time)
             k += 1
             print("Finished files: " + str(k))
@@ -107,6 +110,7 @@ def train_and_test():
     k += 1
     print("Finished files: " + str(k))
 
-    f = open(root_path + "results.txt","a")
+    # f = open(root_path + "results.txt","a")
+    f = open(root_path + "test_results.txt","a")
     f.write("Time spent for entire code : " + str(round(time.time()-global_start_time,2)))
     f.close()
