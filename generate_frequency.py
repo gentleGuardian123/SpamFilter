@@ -1,3 +1,4 @@
+import root_path
 import os
 import string
 import numpy as np
@@ -10,7 +11,7 @@ def generate_frequency():
 
     start_time = time()
 
-    df = pd.read_csv('/content/drive/MyDrive/SpamFilter/Results/wordslist.csv',header=0)
+    df = pd.read_csv(root_path + "wordslist.csv", header=0)
     words = df['word']
 
     lmtzr = WordNetLemmatizer()
@@ -18,7 +19,7 @@ def generate_frequency():
     directory_in_str = "emails/"
     directory = os.fsencode(directory_in_str)
 
-    f = open("/content/drive/MyDrive/SpamFilter/Results/frequency.csv","w+")
+    f = open(root_path + "frequency.csv", "w+")
     for i in words:
         f.write(str(i) + ',')
     f.write('output')
@@ -43,7 +44,7 @@ def generate_frequency():
                 if(words[i] == word):
                     words_list_array[i] = words_list_array[i] + 1
                     break
-        f = open("/content/drive/MyDrive/SpamFilter/Results/frequency.csv","a")
+        f = open(root_path + "frequency.csv","a")
         for i in range(words.size):
             f.write(str(int(words_list_array[i])) + ',')
         if(len(file_name) == 68):

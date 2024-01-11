@@ -1,3 +1,4 @@
+import root_path
 import time
 import pandas as pd
 import cvxopt.solvers
@@ -45,7 +46,7 @@ def implement(X_train, Y_train, X_test, Y_test, params, type):
     return confusion_matrix(ham_ham,ham_spam,spam_ham,spam_spam)
 
 def write_to_file(matrix,result,parameters,type,start_time):
-    f = open("/content/drive/MyDrive/SpamFilter/Results/results.txt","a")
+    f = open(root_path + "results.txt","a")
     if(type=="polykernel"):
         f.write("Polykernel model parameters")
         f.write("\n")
@@ -71,7 +72,7 @@ def train_and_test():
     global_start_time = time()
     cvxopt.solvers.options['show_progress'] = False
 
-    df2 = pd.read_csv('/content/drive/MyDrive/SpamFilter/Results/frequency.csv', header=0)
+    df2 = pd.read_csv(root_path + "/frequency.csv", header=0)
 
     input_output = df2.values
     X = input_output[:,:-1]
@@ -83,7 +84,7 @@ def train_and_test():
     X_test = X[train:,:]
     Y_test = Y[train:,:]
 
-    f = open("/content/drive/MyDrive/SpamFilter/Results/results.txt","w+")
+    f = open(root_path + "results.txt","w+")
     f.close()
     k = 0
     type = {}
@@ -107,6 +108,6 @@ def train_and_test():
     k += 1
     print("Finished files: " + str(k))
 
-    f = open("/content/drive/MyDrive/SpamFilter/Results/results.txt","a")
+    f = open(root_path + "results.txt","a")
     f.write("Time spent for entire code : " + str(round(time()-global_start_time,2)))
     f.close()

@@ -1,3 +1,4 @@
+import root_path
 import os
 import time
 import string
@@ -14,20 +15,16 @@ def text_cleanup(text):
     return cleaned_text
 
 def generate_wordlist():
-
     start_time = time.time()
 
     lmtzr = WordNetLemmatizer()
     round = 0
     count = {}
-
-    directory_in_str = "emails/"
-    directory = os.fsencode(directory_in_str)
+    directory = os.fsencode(root_path + "emails/")
 
     for file in os.listdir(directory):
         file = file.decode("utf-8")
-        file_name = str(os.getcwd()) + '/emails/'
-        file_name = file_name + file
+        file_name = root_path + "emails/" + file
         file_reading = open(file_name,"r",encoding='utf-8', errors='ignore')
         words = text_cleanup(file_reading.read())
         for word in words:
@@ -44,7 +41,7 @@ def generate_wordlist():
     sorted_count = sorted(count.items(), key=operator.itemgetter(1), reverse=True)
     sorted_count = dict(sorted_count)
 
-    f= open("/content/drive/MyDrive/SpamFilter/Results/wordslist.csv","w+")
+    f= open(root_path + "wordslist.csv","w+")
     f.write('word,count')
     f.write('\n')
     for word , times in sorted_count.items():
