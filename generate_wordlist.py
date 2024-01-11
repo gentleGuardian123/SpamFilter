@@ -13,7 +13,7 @@ def text_cleanup(text):
     cleaned_text = [word.lower() for word in text_without_stopwords.split()]
     return cleaned_text
 
-if __name__ == "__main__":
+def generate_wordlist():
 
     start_time = time.time()
 
