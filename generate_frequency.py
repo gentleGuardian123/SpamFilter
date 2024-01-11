@@ -47,7 +47,7 @@ def generate_frequency():
         f = open(root_path + "frequency.csv","a")
         for i in range(words.size):
             f.write(str(int(words_list_array[i])) + ',')
-        if(len(file_name) == 68):
+        if(file_name.startswith('s')):
             f.write("-1")
         elif (len(file_name) == 71):
             f.write("1")

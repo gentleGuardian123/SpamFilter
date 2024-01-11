@@ -41,7 +41,7 @@ def generate_wordlist():
     sorted_count = sorted(count.items(), key=operator.itemgetter(1), reverse=True)
     sorted_count = dict(sorted_count)
 
-    f= open(root_path + "wordslist.csv","w+")
+    f = open(root_path + "wordslist.csv", "w+")
     f.write('word,count')
     f.write('\n')
     for word , times in sorted_count.items():
