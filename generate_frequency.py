@@ -1,6 +1,7 @@
 import os
 import time
 import string
+import random
 import numpy as np
 import pandas as pd
 from nltk.corpus import stopwords
@@ -27,6 +28,8 @@ def generate_frequency():
     f.write('\n')
     f.close()
 
+    lines = []
+
     rd = 0
     # for file in os.listdir(directory)[:100]:
     for file in os.listdir(directory):
@@ -46,18 +49,25 @@ def generate_frequency():
                 if(words[i] == word):
                     words_list_array[i] = words_list_array[i] + 1
                     break
-        f = open(root_path + "frequency.csv","a")
-        # f = open(root_path + "test_frequency.csv", "a")
+        line = ""
         for i in range(words.size):
-            f.write(str(int(words_list_array[i])) + ',')
+            line += str(int(words_list_array[i])) + ','
         if(file.startswith('s')):
-            f.write("-1")
+            line += "-1"
         elif (file.startswith('h')):
-            f.write("1")
-        f.write('\n')
-        f.close()
+            line += "1"
+        line += "\n"
+        lines.append(line)
         if rd % 100 == 0:
             print("Finished email files: " + str(rd))
+    
+    random.shuffle(lines)
+
+    f = open(root_path + "frequency.csv", "a")
+    # f = open(root_path + "test_frequency.csv", "a")
+    for line in lines:
+        f.write(line)
+    f.close()
 
     end_time = time.time()
     print("Time for segregating data and forming input vector(word frequency): " + str(round(end_time - start_time, 2)) + " seconds")
