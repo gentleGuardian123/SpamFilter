@@ -1,39 +1,41 @@
-import root_path
 import os
+import time
 import string
 import numpy as np
 import pandas as pd
-from time import time
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
+from root_path import root_path
 
 def generate_frequency():
 
-    start_time = time()
+    start_time = time.time()
 
-    df = pd.read_csv(root_path + "wordslist.csv", header=0)
+    df = pd.read_csv(root_path + "wordlist.csv", header=0)
+    # df = pd.read_csv(root_path + "test_wordlist.csv", header=0)
     words = df['word']
 
     lmtzr = WordNetLemmatizer()
 
-    directory_in_str = "emails/"
-    directory = os.fsencode(directory_in_str)
+    directory = os.fsencode(root_path + "emails/")
 
     f = open(root_path + "frequency.csv", "w+")
+    # f = open(root_path + "test_frequency.csv", "w+")
     for i in words:
         f.write(str(i) + ',')
     f.write('output')
     f.write('\n')
     f.close()
 
-    k = 0
+    rd = 0
+    # for file in os.listdir(directory)[:100]:
     for file in os.listdir(directory):
         file = file.decode("utf-8")
-        file_name = str(os.getcwd()) + '/emails/'
+        file_name = root_path + 'emails/'
         for i in file:
             if(i != 'b' and i != "'"):
                 file_name = file_name + i
-        k += 1
+        rd += 1
         file_reading = open(file_name,"r",encoding='utf-8', errors='ignore')
         words_list_array = np.zeros(words.size)
         for word in file_reading.read().split():
@@ -45,15 +47,17 @@ def generate_frequency():
                     words_list_array[i] = words_list_array[i] + 1
                     break
         f = open(root_path + "frequency.csv","a")
+        # f = open(root_path + "test_frequency.csv", "a")
         for i in range(words.size):
             f.write(str(int(words_list_array[i])) + ',')
-        if(file_name.startswith('s')):
+        if(file.startswith('s')):
             f.write("-1")
-        elif (len(file_name) == 71):
+        elif (file.startswith('h')):
             f.write("1")
         f.write('\n')
         f.close()
-        if k % 100 == 0:
-            print("Finished email files: " + str(k) * 100)
+        if rd % 100 == 0:
+            print("Finished email files: " + str(rd))
 
-    print("Time for segregating data and forming input vector(word frequency): " + str(round(time() - start_time,2)) + " seconds")
+    end_time = time.time()
+    print("Time for segregating data and forming input vector(word frequency): " + str(round(end_time - start_time, 2)) + " seconds")

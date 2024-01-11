@@ -1,12 +1,11 @@
-import root_path
 import time
 import pandas as pd
 import cvxopt.solvers
-import time
 
 from prettytable import PrettyTable
 from svm_trainer import SVMTrainer
 from svm_kernel import Kernel
+from root_path import root_path
 
 def calculate(true_positive,false_positive,false_negative):
     result = {}
@@ -94,7 +93,7 @@ def train_and_test():
 
     for i in range(2,4):
         for j in range(0,10):
-            start_time = time()
+            start_time = time.time()
             parameters['dimension'] = i
             parameters['offset'] = j
             matrix , result = implement(X_train,Y_train,X_test,Y_test,parameters,str(type['1']))
@@ -102,12 +101,12 @@ def train_and_test():
             k += 1
             print("Finished files: " + str(k))
 
-    start_time = time()
+    start_time = time.time()
     matrix , result = implement(X_train,Y_train,X_test,Y_test,parameters,str(type['2']))
     write_to_file(matrix,result,parameters,type,start_time)
     k += 1
     print("Finished files: " + str(k))
 
     f = open(root_path + "results.txt","a")
-    f.write("Time spent for entire code : " + str(round(time()-global_start_time,2)))
+    f.write("Time spent for entire code : " + str(round(time.time()-global_start_time,2)))
     f.close()

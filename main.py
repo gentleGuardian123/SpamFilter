@@ -7,8 +7,8 @@ from svm_utils import *
 
 if __name__ == '__main__':
 
-    generate_wordlist()
+    # generate_wordlist()
 
     generate_frequency()
 
-    train_and_test()
+    # train_and_test()
