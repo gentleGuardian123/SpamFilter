@@ -34,7 +34,6 @@ def implement(X_train, Y_train, X_test, Y_test, params, type):
         predictor = trainer.train(X_train,Y_train)
     for i in range(X_test.shape[0]):
         ans = predictor.predict(X_test[i])
-        print(ans)
         if(ans==-1 and Y_test[i]==-1):
             spam_spam+=1
         elif(ans==1 and Y_test[i]==-1):
@@ -72,8 +71,7 @@ def train_and_test():
     global_start_time = time.time()
     cvxopt.solvers.options['show_progress'] = False
 
-    # df2 = pd.read_csv(root_path + "frequency.csv", header=0)
-    df2 = pd.read_csv(root_path + "test_frequency.csv", header=0)
+    df2 = pd.read_csv(root_path + "frequency.csv", header=0)
 
     input_output = df2.values
     X = input_output[:,:-1]
@@ -85,8 +83,7 @@ def train_and_test():
     X_test = X[train:,:]
     Y_test = Y[train:,:]
 
-    # f = open(root_path + "results.txt","w+")
-    f = open(root_path + "test_results.txt","w+")
+    f = open(root_path + "results.txt","w+")
     f.close()
     k = 0
     type = {}
@@ -100,17 +97,16 @@ def train_and_test():
             parameters['dimension'] = i
             parameters['offset'] = j
             matrix, result = implement(X_train,Y_train,X_test,Y_test,parameters,str(type['1']))
-            write_to_file(matrix,result,parameters,type,start_time)
+            write_to_file(matrix,result,parameters,str(type['1']),start_time)
             k += 1
             print("Finished files: " + str(k))
 
     start_time = time.time()
     matrix , result = implement(X_train,Y_train,X_test,Y_test,parameters,str(type['2']))
-    write_to_file(matrix,result,parameters,type,start_time)
+    write_to_file(matrix,result,parameters,str(type['2']),start_time)
     k += 1
     print("Finished files: " + str(k))
 
-    # f = open(root_path + "results.txt","a")
-    f = open(root_path + "test_results.txt","a")
+    f = open(root_path + "results.txt","a")
     f.write("Time spent for entire code : " + str(round(time.time()-global_start_time,2)))
     f.close()

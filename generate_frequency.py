@@ -13,7 +13,6 @@ def generate_frequency():
     start_time = time.time()
 
     df = pd.read_csv(root_path + "wordlist.csv", header=0)
-    # df = pd.read_csv(root_path + "test_wordlist.csv", header=0)
     words = df['word']
 
     lmtzr = WordNetLemmatizer()
@@ -21,7 +20,6 @@ def generate_frequency():
     directory = os.fsencode(root_path + "emails/")
 
     f = open(root_path + "frequency.csv", "w+")
-    # f = open(root_path + "test_frequency.csv", "w+")
     for i in words:
         f.write(str(i) + ',')
     f.write('output')
@@ -64,7 +62,6 @@ def generate_frequency():
     random.shuffle(lines)
 
     f = open(root_path + "frequency.csv", "a")
-    # f = open(root_path + "test_frequency.csv", "a")
     for line in lines:
         f.write(line)
     f.close()

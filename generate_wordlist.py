@@ -44,8 +44,6 @@ def generate_wordlist():
                         dc_dict[word] += 1
                     except:
                         dc_dict[word] = 1
-        # json.dump(count, open("路径", 'w'))  这里可以用json.dump保存各个邮件的词汇字典（含数量），可以避免后学根据特征词构造特征向量重新进行分词查询
-        # json.load(open("路径", 'r'))  通过load可以从文件种读取python对象，后续查询可直接根据字典中是否存在对应值查询
         for (key, value) in count.items():
             try:
                 tf_sum_dict[key] += value # float(value) / word_len
